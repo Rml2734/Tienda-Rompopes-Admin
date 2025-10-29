@@ -1,24 +1,4 @@
-/*
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const password = document.getElementById('password').value;
-    const errorMessage = document.getElementById('errorMessage');
-    
-    const correctPassword = 'Osita2015%';
 
-    if (password === correctPassword) {
-        // Guarda el estado de la sesión en localStorage
-        localStorage.setItem('adminAuthenticated', 'true');
-        // Redirige al panel de administración
-        window.location.href = 'admin.html';
-    } else {
-        errorMessage.style.display = 'block';
-        setTimeout(() => {
-            errorMessage.style.display = 'none';
-        }, 3000);
-    }
-});
-*/
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const password = document.getElementById('password').value;
