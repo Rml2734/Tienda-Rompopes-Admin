@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Administración - Rompopes Don Nino</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    />
+    <link rel="stylesheet" href="admin.css" />
+         <link rel="icon" type="image/svg+xml" href="estadisticas.ico" />  <!-- "/vite.svg" -->
+  </head>
+  <body>
+    <div class="admin-container">
+      <header class="admin-header">
+        <h1><i class="bx bx-cog"></i> Panel de Administración</h1>
+        <nav class="header-nav">
+          <button id="theme-toggle" class="btn theme-toggle">
+            <i class="bx bx-moon"></i> <span class="theme-text">Modo Noche</span>
+          </button>
+          <a href="/" class="btn btn-primary"><i class="bx bx-home"></i> Volver a la Tienda</a>
+          <button id="logout-btn" class="btn btn-danger">
+            <i class="bx bx-log-out"></i> Cerrar Sesión
+          </button>
+        </nav>
+      </header>
+
+      <div class="admin-content">
+        <aside class="admin-sidebar">
+          <div class="sidebar-section">
+            <h3>Navegación</h3>
+            <ul>
+              <li>
+                <a href="#dashboard" class="active"
+                  ><i class="bx bx-dashboard"></i> Dashboard</a
+                >
+              </li>
+              <li>
+                <a href="#orders"><i class="bx bx-package"></i> Pedidos</a>
+              </li>
+              <li>
+                <a href="#products"><i class="bx bx-drink"></i> Productos</a>
+              </li>
+              <li>
+                <a href="#customers"><i class="bx bx-user"></i> Clientes</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h3>Filtros</h3>
+            <div class="filter-group">
+              <label for="status-filter">Estado:</label>
+              <select id="status-filter">
+                <option value="">Todos</option>
+                <option value="pending">Pendiente</option>
+                <option value="processing">Procesando</option>
+                <option value="shipped">Enviado</option>
+                <option value="delivered">Entregado</option>
+                <option value="cancelled">Cancelado</option>
+              </select>
+            </div>
+          </div>
+        </aside>
+
+        <main class="admin-main">
+          <section id="dashboard" class="section active">
+            <h2>Dashboard</h2>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bx bx-package"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="total-orders">0</h3>
+                  <p>Total Pedidos</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon revenue">
+                  <i class="bx bx-dollar"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="total-revenue">$0</h3>
+                  <p>Ingresos Totales</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon avg">
+                  <i class="bx bx-cart"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="avg-order">$0</h3>
+                  <p>Ticket Promedio</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon pending">
+                  <i class="bx bx-time"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="pending-orders">0</h3>
+                  <p>Pedidos Pendientes</p>
+                </div>
+              </div>
+            </div>
+
+            <!--BORRAR SINO FUNCIONA-->
+
+             <!--BORRAR SINO FUNCIONA-->
+
+            <div class="charts-container">
+              <div class="chart-card">
+                <h3>Productos Más Vendidos</h3>
+                <canvas id="top-products-chart" class="chart"></canvas>
+              </div>
+
+              <div class="chart-card">
+                <h3>Estados de Pedidos</h3>
+                <canvas id="orders-status-chart" class="chart"></canvas>
+              </div>
+
+              <div class="chart-card weekly-sales">
+                <h3>Ventas Semanales</h3>
+                <canvas id="weekly-sales-chart" class="chart"></canvas>
+              </div>
+              
+
+              
+            </div>
+          </section>
+
+          <section id="orders" class="section">
+            <div class="section-header">
+              <h2>Gestión de Pedidos</h2>
+              <div class="pagination-controls">
+                <button id="prev-page" class="pagination-btn">
+                  <i class="bx bx-chevron-left"></i>
+                </button>
+                <span id="current-page">Página 1</span>
+                <button id="next-page" class="pagination-btn">
+                  <i class="bx bx-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="orders-table-container">
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Productos</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="products" class="section">
+            <h2>Gestión de Productos</h2>
+            <div class="products-grid" id="products-grid"></div>
+          </section>
+
+          <section id="customers" class="section">
+            <h2>Gestión de Clientes</h2>
+            <div class="customers-table-container">
+              <table class="customers-table">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Pedidos</th>
+                    <th>Total Gastado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="customers-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal" id="order-detail-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Detalles del Pedido #<span id="modal-order-id"></span></h2>
+          <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="order-detail-section">
+            <h3>Información del Cliente</h3>
+            <div id="customer-details"></div>
+          </div>
+
+          <div class="order-detail-section">
+            <h3>Productos</h3>
+            <div id="order-items-details"></div>
+          </div>
+
+          <div class="order-detail-section">
+            <h3>Estado del Pedido</h3>
+            <select id="order-status-select">
+              <option value="pending">Pendiente</option>
+              <option value="processing">Procesando</option>
+              <option value="shipped">Enviado</option>
+              <option value="delivered">Entregado</option>
+              <option value="cancelled">Cancelado</option>
+            </select>
+            <button id="update-status-btn" class="btn">
+              Actualizar Estado
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Importaciones de Chart.js corregidas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>

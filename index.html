@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Administración - Rompopes Don Nino</title>
+    <link rel="stylesheet" href="login-admin.css">
+     <link rel="icon" type="image/svg+xml" href="admin.ico" />  <!-- "/vite.svg" -->
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Acceso Administración</h1>
+            <p>Rompopes Don Nino</p>
+        </div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" placeholder="Ingresa tu contraseña" required>
+            </div>
+            <button type="submit" class="login-btn">Acceder al Panel</button>
+            <div id="errorMessage" class="error-message">Contraseña incorrecta</div>
+        </form>
+    </div>
+
+    <!--
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Cambia 'adminRompopes2024' por la contraseña que quieras usar
+            if (password === 'adminRompopes2024') {
+                // AJUSTA ESTA RUTA SEGÚN DONDE TENGAS TU admin.html
+                window.location.href = 'admin.html';
+            } else {
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
+    -->
+    <script type="module" src="login-admin.js"></script>
+</body>
+</html>
