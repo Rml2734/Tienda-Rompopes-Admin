@@ -1,5 +1,13 @@
 // Configuración
-const API_BASE_URL = 'http://localhost:3001/api';
+//const API_BASE_URL = 'http://localhost:3001/api';
+
+// Configuración
+// ✅ CORRECCIÓN: Definición de la URL base con lógica de entorno
+const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_BASE_URL = IS_LOCAL
+    ? 'http://localhost:3001/api' 
+    : 'https://tienda-rompopes-backend-production.up.railway.app/api';
+
 let currentPage = 1;
 let currentStatusFilter = '';
 let ordersData = [];
