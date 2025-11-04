@@ -64,7 +64,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
     const errorMessage = document.getElementById('errorMessage');
 
-    // MODIFICADO: Usamos la variable de entorno para construir la URL
+    // MODIFICADO: Usar la variable de entorno para construir la URL
     const apiUrl = `${BACKEND_BASE_URL}/api/admin/login`; 
     console.log('Realizando solicitud a la URL:', apiUrl);
 
