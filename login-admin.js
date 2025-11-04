@@ -153,7 +153,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             localStorage.setItem('adminToken', data.token);
             localStorage.setItem('adminAuthenticated', 'true');
             // Redirige al panel de administración
-            window.location.href = 'admin.html';
+            window.location.href = '/admin.html';
         }
         
     } catch (error) {
