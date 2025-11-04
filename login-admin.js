@@ -109,64 +109,61 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     }
 });
 */
-
 // Definición de la URL base con lógica de entorno
 const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 const BACKEND_BASE_URL = IS_LOCAL
-    ? 'http://localhost:3001'
-    : 'https://tienda-rompopes-backend-production.up.railway.app'; 
+    ? 'http://localhost:3001'
+    : 'https://tienda-rompopes-backend-production.up.railway.app'; 
 
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const password = document.getElementById('password').value;
-    const errorMessage = document.getElementById('errorMessage');
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('errorMessage');
 
-    // MODIFICADO: Usar la variable de entorno para construir la URL
-    const apiUrl = `${BACKEND_BASE_URL}/api/admin/login`; 
-    console.log('Realizando solicitud a la URL:', apiUrl);
+    // MODIFICADO: Usar la variable de entorno para construir la URL
+    const apiUrl = `${BACKEND_BASE_URL}/api/admin/login`; 
+    console.log('Realizando solicitud a la URL:', apiUrl);
 
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ password: password })
-        });
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password: password })
+        });
 
-        console.log('Respuesta del servidor:', response.status, response.statusText);
+        console.log('Respuesta del servidor:', response.status, response.statusText);
+        
+        // El backend siempre devolverá un cuerpo JSON (incluso con 401), 
+        // así que primero leemos el JSON.
+        const data = await response.json();
+        console.log('Datos recibidos:', data);
 
-        if (!response.ok) {
-            // ✅ CORRECCIÓN 1: Si no es 200, lee el error del backend para mostrar un mejor mensaje
-            const errorData = await response.json(); 
-            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok || data.success === false) {
+            // Maneja el 401 si bcrypt falla, o cualquier otro error del servidor
+            // El backend envía el mensaje en data.message
+            throw new Error(data.message || `Error HTTP: ${response.status}`);
+        }
 
-        const data = await response.json();
-        console.log('Datos recibidos:', data);
-
-         if (data.success) {
-            // Guarda el token y el estado de la sesión en localStorage
-            localStorage.setItem('adminToken', data.token);
-            localStorage.setItem('adminAuthenticated', 'true');
-            // Redirige al panel de administración
-            window.location.href = 'admin.html';
-        } else {
-            // ✅ CORRECCIÓN 2: Si success es false (esto rara vez ocurre con un 200, pero es seguro)
-            errorMessage.textContent = data.message || 'Error de autenticación.';
-            errorMessage.style.display = 'block';
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 3000);
-        }
-    } catch (error) {
-        console.error('Error en la solicitud de login:', error);
-        // ✅ CORRECCIÓN 3: Muestra el mensaje exacto que el error capturó (de la línea 48 o de conexión)
-        errorMessage.textContent = error.message.includes('HTTP error') ? 'Credenciales incorrectas.' : error.message; 
-        errorMessage.style.display = 'block';
-        setTimeout(() => {
-            errorMessage.style.display = 'none';
-        }, 3000);
-    }
+        // Si response.ok es true Y data.success es true (¡el caso que acabamos de confirmar!)
+        if (data.success) {
+            // Guarda el token y el estado de la sesión en localStorage
+            localStorage.setItem('adminToken', data.token);
+            localStorage.setItem('adminAuthenticated', 'true');
+            // Redirige al panel de administración
+            window.location.href = 'admin.html';
+        }
+        
+    } catch (error) {
+        console.error('Error en la solicitud de login:', error);
+        
+        // Muestra el error exacto que se capturó (ya sea de la API o de la conexión)
+        errorMessage.textContent = error.message; 
+        errorMessage.style.display = 'block';
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 3000);
+    }
 });
