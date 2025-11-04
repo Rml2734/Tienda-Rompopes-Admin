@@ -54,6 +54,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
 // Definición de la URL base con lógica de entorno
 const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
 const BACKEND_BASE_URL = IS_LOCAL
     ? 'http://localhost:3001'
     : 'https://tienda-rompopes-backend-production.up.railway.app'; 
